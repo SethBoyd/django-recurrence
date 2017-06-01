@@ -26,6 +26,8 @@ class RecurrenceField(with_metaclass(SubfieldBase, fields.Field)):
     def to_python(self, value):
         if value is None:
             return value
+        elif hasattr(value, 'startswith') and len(value) and not value.startswith('RRULE:'):
+            value = "RRULE:" + value
         if isinstance(value, recurrence.Recurrence):
             return value
         value = super(RecurrenceField, self).to_python(value) or u''
